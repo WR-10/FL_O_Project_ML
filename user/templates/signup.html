@@ -9,6 +9,7 @@
   <form method="POST">
   {% csrf_token %}
   <input type="username" name="username" placeholder="username" id="username" class="username">아이디</input></br>
+  <input type="profile" name="profile" placeholder="profile" id="profile" class="profile">이름</input></br>
   <input type="password" name="password" placeholder="password" id="password" class="password">비밀번호</input></br>
   <input type='password' name='passwordcheck' placeholder="passwordcheck" id="passwordcheck" class="passwordcheck">비밀번호 확인</input></br>
   <button type="submit">회원가입</button>
