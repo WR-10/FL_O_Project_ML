@@ -7,22 +7,32 @@ def write(request):
     # if user:
         
         if request.method == "GET":
-
             return render(request, 'write.html', {'article' : '안녕하세요'})
         elif request.method == "POST":
             title = request.POST.get('title')
             content = request.POST.get('content')
-            Article.objects.create(title = title, content = content)
+            article = Article()
+            article.image = request.FILES['image']
+            
+            Article.objects.create(title = title, content = content, image = article.image)
+            
             
             return redirect('/tweet/community/')
 
 def community(request):
     if request.method == 'GET':
-        articles = Article.objects.all()
+        articles = Article.objects.all().order_by('-create_at')
         context = {
             'articles' : articles
         }
+        print(articles[0].image)
+        
         return render(request, 'community.html', context)
+
+def add(request, id):
+    pass
+    
+            
 
 
              

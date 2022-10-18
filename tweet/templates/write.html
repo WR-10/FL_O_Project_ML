@@ -9,11 +9,12 @@
 <body>
     <h1>글을 작성해 주세요</h1>
      
-    <form method = "POST">
+    <form method = "POST" enctype="multipart/form-data">
         {% csrf_token %}
         
         <input type = "title"  value = "{{ article }}" name = "title" id = "title" placeholder="제목작성"> 
-        <input type = "text" name = "content" id = content placeholder="내용을 적어주세요"> 
+        <input type = "text" name = "content" id = "content" placeholder="내용을 적어주세요"> 
+        <input type="file" id="image" name="image">
         <input type = "submit">
 
     </form>
