@@ -12,7 +12,6 @@ def signup(request):
         profile = request.POST.get('profile')
         password =  request.POST.get('password')
         passwordcheck =  request.POST.get('passwordcheck')
-
         if password == passwordcheck:
             Users.objects.create_user(username=username, password=password, profile=profile)
             return redirect('/user/signin')
@@ -53,3 +52,4 @@ def searchname(request, profile):
         search_name = Users.objects.filter(profile=profile)
         print(search_name[0].profile)
     return render(request, 'search.html', {'search_name':search_name})
+
