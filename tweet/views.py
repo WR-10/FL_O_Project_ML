@@ -16,13 +16,24 @@ def write(request):
             article.title = request.POST.get('title')
             article.content = request.POST.get('content')
             article.image = request.FILES['image']
-            
             article.save()
             
+            print(type(article.image))
+            print(str(article.image))
+
             #* 이 포스팅의 이미지로 Yolov5 돌려서 결과(tag) 출력
 
-            # tag = machine_learning.ml_yolov5(article.image)
+            tag = machine_learning.ml_yolov5(str(article.image)) # 이미지 이름
 
+            print(f"def write : {tag} == '분석완료'" )
+            # return 값이 어떤식으로
+
+            # tag = ['person','phone','tie'] <<- list
+            # 
+            # def a(aa):
+            #   return b
+
+            return redirect('/tweet/community/')
             # tag model(db) 저장
 
             # article.tag 저장
