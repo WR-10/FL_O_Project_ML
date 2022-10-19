@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user',
     'tweet',
+    'machine_learning',
 ]
 
 MIDDLEWARE = [

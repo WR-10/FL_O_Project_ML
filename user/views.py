@@ -9,11 +9,12 @@ def signup(request):
         return render(request, 'signup.html')
     elif request.method == "POST":
         username =  request.POST.get('username')
+        profile = request.POST.get('profile')
         password =  request.POST.get('password')
         passwordcheck =  request.POST.get('passwordcheck')
 
         if password == passwordcheck:
-            Users.objects.create_user(username=username, password=password)
+            Users.objects.create_user(username=username, password=password, profile=profile)
             return redirect('/user/signin')
 
     else:
@@ -46,3 +47,9 @@ def home(request):
 def logout(request):
         auth.logout(request)
         return redirect("/user/signin")
+    
+def searchname(request, profile):
+    if request.method == "GET":
+        search_name = Users.objects.filter(profile=profile)
+        print(search_name[0].profile)
+    return render(request, 'community.html', {'search_name':search_name})
