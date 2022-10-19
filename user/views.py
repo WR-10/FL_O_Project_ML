@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from .models import Users
-from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
+
 def signup(request):
     if request.method == "GET":
         return render(request, 'signup.html')
