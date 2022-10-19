@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'user',
     'tweet',
     'machine_learning',
+    'media'
 ]
 
 MIDDLEWARE = [
