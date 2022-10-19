@@ -51,5 +51,6 @@ def logout(request):
 def searchname(request, profile):
     if request.method == "GET":
         search_name = Users.objects.filter(profile=profile)
-        print(search_name[0].profile)
     return render(request, 'community.html', {'search_name':search_name})
+
+

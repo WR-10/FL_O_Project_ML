@@ -1,8 +1,10 @@
+from re import T
 from django.shortcuts import render, redirect
-from .models import Article
+from .models import Article, Tag
 from machine_learning import machine_learning
-from .models import Article, TweetComment
+from .models import Article, TweetComment, Tag
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 
 def write(request):
@@ -19,17 +21,48 @@ def write(request):
             
             article.save()
             
+            
             #* 이 포스팅의 이미지로 Yolov5 돌려서 결과(tag) 출력
 
-            # tag = machine_learning.ml_yolov5(article.image)
-
-            # tag model(db) 저장
-
+            tag = machine_learning.ml_yolov5(str(article.image)) # 여기서 TypeError >> str로 변경해야된다.
+            # tag list가 나올 준비 되있음 print(tag) 해본 결과 잘 나옴
+            # 뭐 되는게 없네 
+            # 여기부터 Tag 함수 작성을 한다.
+            # 내가 db 저장해야 할 것들 리스트에 있는 tag잖아
+            for i in tag: # 태그 리스트를 for문을 돌린다.
+                
+                # if '#' in i: # 만약 태그 중 '#'이 있다면 근데 #이 없는데?
+                    # 태그를 테이블id에 저장해야한다??!?? >> tag_id?
+                # tag = Tag()
+                # tag.tagname = i
+                tag = Tag.objects.get(tagname=i)
+                # print(i) # person이라고 나옴...
+                # tag.save() # 여기도 db 저장은 안됨 ??? 아 왜 안될까~~~용? 22:36 >> 여기서 문제나옴 쓰부럴 
+                #todo 이거는 tag를 만드는거다.
+        # tag model(db) 저장
+                # article.taghash.set = Tag.objects.get(tagname=i) # pk? 또 이거보니깐 모르겠네 내 생각은 article에 있는 pk 임 게시글 몇 번째 id ?!?!? 여기문제인데 미치겠다.
+                # article.save() # article.taghash NO!!
+                article.taghash.add(tag) # 37 tag와 같은 타입이다.
+                print(article.taghash) # 여기서는 ['person'] 이라고 나옴! << 안나옴 머신러닝.py에서 print되서 나오는거였음 ㅜㅜ
+            return redirect('/tweet/community/')
+            # tag를 80개를 넣어야 되는데 초기에 table을 만들 때 tagname을 넣어줄 수 있는가??
             # article.tag 저장
+            #* article.taghash에 저장 하는 함수이다.
             
-
-            # Article.objects.create(title = title, content = content, image = article.image)
-
+            
+def search_result(request):
+    if request.method == "POST":
+        searchname = request.POST.get('search_button') # 검색 창에서 POST를 받는다.
+        # tag = Tag.?? 태그 검색 해야하는데 이거는 그러면 걸러내야함? 아 tag 결과를 걸러내야함!
+        tag = Tag.objects.filter(tagname=searchname) # 이게 태그 걸러내는용
+        feed = Article.objects.filter(taghash__in = tag).order_by('-updated_at')
+        
+        # return render(request, 'search_result.html', {'tag':tag, 'feed':feed})
+        return render(request, 'search_result.html') # 다시 한번 또 기억하자 동근아 / 뒤에 꼭 써라.... 뒤지기 싫으면...
+    elif request.method == 'GET': # GET은 RENDER로
+        print('search_result들어옴')
+        return render(request, 'search_result.html') # 다시한번 기억하자 동근아 html은 /안쓴다!!!
+        
 
 def community(request):
     if request.method == 'GET':
@@ -103,3 +136,5 @@ def post_like(request, id):
     else:
         click_post.likes.add(request.user)
     return redirect('/')
+
+
