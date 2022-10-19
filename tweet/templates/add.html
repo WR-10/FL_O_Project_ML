@@ -7,23 +7,17 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Main Screen</h1>
-
-    {% for article in articles %}
-    <p>글 제목 : {{ article.title }}</p>
-    <p>글 내용 : {{ article.content }}</p>
-    <a href = "{{article.id}}" >
-        <img src = "{{article.image.url}}">
+    <p>글 제목 : {{ id_com.title }}</p>
+    <p>글 내용 : {{ id_com.content }}</p>
+    
+    <img src = "{{id_com.image.url}}" />
+    <a href = "{{ id_com.id }}/mod" > 
+        <button >수정하기</button>
     </a>
     
-
+    
     
     <hr/>
-
-    {% endfor %} 
-    
-    
-
     
 </body>
 </html>
