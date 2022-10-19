@@ -29,7 +29,7 @@ class TweetComment(models.Model):
     comment = models.TextField() #댓글 내용
     created_at = models.DateTimeField(auto_now_add=True) #작성 날짜
     updated_at = models.DateTimeField(auto_now=True)
-    #업뎃 날짜
+    #업데이트 날짜
 
 
     # 게시글 작성시 DB에 title로 표시

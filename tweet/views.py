@@ -1,11 +1,7 @@
-from cv2 import computeECC
 from django.shortcuts import render, redirect
-
-# from django.http import HttpResponse
 from .models import Article
 from machine_learning import machine_learning
-from django.http import HttpResponse
-from .models import Article, Comment, TweetComment
+from .models import Article, TweetComment
 from django.contrib.auth.decorators import login_required
 
 
@@ -14,7 +10,6 @@ def write(request):
     # if user:
         
         if request.method == "GET":
-
             return render(request, 'write.html')
         elif request.method == "POST":
             article = Article()
@@ -47,15 +42,6 @@ def community(request):
         return render(request, 'community.html', context)
 
 
-
-@login_required
-def write_comment(request, id): # 댓글 작성
-    if request.method =='POST':
-        comment = request.POST.get('comment','')
-        current_twwet = Article.objects.get(id = id)
-
-        
-
 def add(request, id):
     id_com = Article.objects.get(id = id) # get의 의미 db에 A필드에 B인걸 가지고 오겠따(where같은개념)  
     com = {
@@ -77,21 +63,24 @@ def mod(request, id):
         id_sa.title = request.POST.get('title')
         id_sa.content = request.POST.get('content')
         id_sa.save()
-            
+        
         return redirect('/tweet/community/')        
         
-            
 
-
-
+@login_required
+def write_comment(request, id): # 댓글 작성
+    if request.method =='POST':
+        comment = request.POST.get('comment','')
+        current_tweet = Article.objects.get(id = id)
         TC = TweetComment()
         TC.comment = comment
         TC.author = request.user
-        TC.tweet = current_twwet
+        TC.tweet = current_tweet
         TC.save()
         
         return redirect('/write/'+str(id))
-    
+
+
 @login_required
 def delete_comment(request, id):
     comment = TweetComment.objects.get(id=id)
