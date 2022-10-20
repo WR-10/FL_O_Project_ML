@@ -5,4 +5,5 @@ app_name = "user"
 
 urlpatterns = [
     path('searchname/<str:profile>/', views.searchname, name="searchname"),
+    path('profile/modify/',views.profile_modify),
 ]
