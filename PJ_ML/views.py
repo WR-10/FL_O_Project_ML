@@ -23,7 +23,6 @@ def main(request):
         return redirect('/accounts/login/')
 
 
-
 @login_required
 def user_view(request):
     if request.method == 'GET':
@@ -40,4 +39,5 @@ def user_follow(request, id):
     else:
         click_user.followed.add(request.user)
     return redirect('/user')    
+
 
