@@ -256,47 +256,36 @@
         </div>
     </div>
 </div>
-<div class="row justify-content-md-center">
-    <div class="col-md-4">
-        <div class="mycards" id="comment-list">
-            <div class="card">
-                <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                        <p>새로운 앨범 너무 멋져요!</p>
-                        <footer class="blockquote-footer">호빵맨</footer>
-                    </blockquote>
+<!-- 글 작성 하는 곳 -->
+<form class="input-group mb-3" action="/post-detail/comment/{{ article.id }}" method="post">
+    {% csrf_token %}
+    <input type="text" class="form-control" id='comment' name='comment' placeholder="댓글을 작성 해 주세요"/>
+    <button class="btn btn-outline-secondary" type="submit">작성</button>
+</form>
+<hr>
+<!-- 반복문이 들어 갈 곳 -->
+                {% for cm in comment %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="media">
+                <div class="media-body">
+                    <h5 class="mt-0"> {{ cm.comment }} </h5>
+                    <span> {{ cm.author }} </span>
+                    <span> - {{ cm.created_at | timesince }} 전</span>
                 </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                        <p>새로운 앨범 너무 멋져요!</p>
-                        <footer class="blockquote-footer">호빵맨</footer>
-                    </blockquote>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                        <p>새로운 앨범 너무 멋져요!</p>
-                        <footer class="blockquote-footer">호빵맨</footer>
-                    </blockquote>
-                </div>
+                {% if cm.author == user %}
+                    <div style="float: right">
+                        <a href="post-detail/comment/delete/{{ cm.id }}">
+                            <span class="badge bg-danger">삭제</span>
+                        </a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
-</div>
-<div class="mypost-comment">
-    <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="name" placeholder="url">
-        <label for="floatingInput">닉네임</label>
-    </div>
-    <div class="form-floating">
-        <textarea class="form-control" placeholder="Leave a comment here" id="comment"
-            style="height: 100px"></textarea>
-        <label for="floatingTextarea2">응원댓글</label>
-    </div>
-    <button onclick="save_comment()" type="button" class="btn btn-dark">댓글 남기기</button>
+    <hr>
+{% endfor %}
+<!-- 반복문이 끝난 곳 -->
 </div>
 </div>
 </body>

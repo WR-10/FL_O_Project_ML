@@ -89,7 +89,7 @@ def write_comment(request, id): # 댓글 작성
         TC.tweet = current_tweet
         TC.save()
         
-        return redirect('/write/'+str(id))
+        return redirect('/post-detail/comment/'+str(id))
 
 
 @login_required
@@ -97,14 +97,15 @@ def delete_comment(request, id):
     comment = TweetComment.objects.get(id=id)
     current_tweet = comment.tweet.id
     comment.delete()
-    return redirect('/write/'+str(current_tweet))
+    return redirect('/post-detail/comment/'+str(current_tweet))
 
 
 def post_detail(request, id):
     if request.method == 'GET':
-        #todo 여기에 게시글
-        return render(request, 'post_detail.html')
-    
+        my_article = Article.objects.get(id=id) #아티클 id 담아
+        tweet_comment = TweetComment.objects.filter(tweet_id=id).order_by('created_at') #트윗코맨트 트윗 id 
+        return render(request,'post_detail.html',{'article':my_article,'comment':tweet_comment})
+            
 @login_required
 def post_like(request, id):
     me = request.user
