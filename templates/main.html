@@ -35,7 +35,7 @@
         }
         .bgimg {
             width: 100%;
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://movie-phinf.pstatic.net/20210715_95/1626338192428gTnJl_JPEG/movie_image.jpg');
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{user.background.url}}');
             background-position: center;
             background-size: cover;
         }
@@ -128,6 +128,8 @@
         function open_box(){
             $('#post-box').show()
             $('#search-box').hide()
+            $('#profile-box').hide()
+            $('#background_box').hide()
         }
         function close_box(){
             $('#post-box').hide()
@@ -135,9 +137,30 @@
         function open_search_box(){
             $('#search-box').show()
             $('#post-box').hide()
+            $('#profile-box').hide()
+            $('#background_box').hide()
         }
         function close_search_box(){
             $('#search-box').hide()
+        }
+        function open_profile_box(){
+            $('#profile-box').show()
+            $('#post-box').hide()
+            $('#search-box').hide()
+            $('#background_box').hide()
+        }
+        function close_profile_box(){
+            $('#profile-box').hide()
+        }
+
+        function open_background_box(){
+            $('#background_box').show()
+            $('#post-box').hide()
+            $('#search-box').hide()
+            $('#profile-box').hide()
+        }
+        function close_background_box(){
+            $('#background_box').hide()
         }
     </script>
 </head>
@@ -146,7 +169,7 @@
 <div class = "bgimg">
     <nav class="navbar navbar-expand-sm navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="javascript:void(0)">Logo</a>
+            <img class="logo" src ="/media/logo/FL_O-1 (3).png" >
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -155,14 +178,6 @@
                     <li class="nav-item">
 
                         <a class="nav-link" href="/accounts/logout/">logout</a>
-
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)">Link</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)">Link</a>
-                    </li>
                 </ul>
                 <form class="d-flex" action="user/searchuser/" method="post">
                     {% csrf_token %}
@@ -173,20 +188,22 @@
         </div>
     </nav>
 <div class="mytitle">
-    <h1>FL_O</h1>
+    
+    <h1>{{user.username}}</h1>
+    
 
     <div style="display: flex; flex-direction: row">
         <div class="big_profile_box">
             <img class="profile_img"
-                 src="/media/2022/10/19/869acd88b0c94e639a5888095ef94aec.jpg"> 
+                 src="{{user.image.url}}"> 
         </div>
         <div style="display: flex; flex-direction: column; margin: 40px 60px">
             <div class="mb-3" style="display: flex; flex-direction: row;">
             
-                <div style="font-size: 24px"> </div>                        
-                                                       
+                <div style="font-size: 24px"> </div>                                                              
             </div>
-           
+
+
             <div class="mb-3" style="display: flex; flex-direction: row; margin-right: 100px">
                 
                 <div style="margin-right: 30px;"> 게시물 <span style="font-weight: bold"> {{articles.count}} </span></div>
@@ -196,7 +213,7 @@
             </div>
            
             <div style="display: flex; flex-direction: row">
-                <div style="font-size: 18px;font-weight: bold"> {{user.username}} </div>
+                <div style="font-size: 18px;font-weight: bold"> {{user.profile}} </div>
                 
 
             </div>
@@ -211,6 +228,8 @@
     <div class = "user_button">
     <button onclick="open_box()">게시글 등록하기</button>
     <button onclick="open_search_box()">게시글 검색하기</button>
+    <button onclick="open_profile_box()">프로필 수정하기</button>
+    <button onclick="open_background_box()">배경 이미지 변경</button>
     </div>
 </div>
 </div>
@@ -241,26 +260,62 @@
 
 
 
-<form>
+<form action="tweet/search_result/" method="post">
+    {% csrf_token %}
     <div class="mypost" id="search-box">
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" placeholder="제목을 입력하세요">
+            <input type="text" class="form-control" placeholder="제목을 입력하세요" name="search_button">
             <label>TAG</label>
         </div>
         <div class="mybtns">
-            <button type="submit" class="btn btn-dark">검색</button>
+            <button type="submit" class="btn btn-dark" >검색</button>
             <button onclick="close_search_box()" type="button" class="btn btn-outline-dark">닫기</button>
         </div>
     </div>
-    </form>
+</form>
+
+<form method = "POST" action = "/user/profile/modify/" enctype="multipart/form-data">
+{% csrf_token %}
+<div class="mypost" id="profile-box">
+    <div class="form-floating mb-3">
+        <input type="text" name = "profile" id = "title" class="form-control" placeholder="제목을 입력하세요">
+        <label>소개글</label>
+    </div>
+    <div class="form-floating">
+        <input type="file" id="image" name="image">
+    </div>
+    <div class="mybtns">
+        <button type="submit" class="btn btn-dark">수정하기</button>
+        <button onclick="close_profile_box()" type="button" class="btn btn-outline-dark">닫기</button>
+    </div>
+</div>
+</form>
+
+
+<form method = "POST" action = "/user/background/modify/" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mypost" id="background_box">
+        
+        <div class="form-floating mb-3">
+
+        </div>
+        <div class="form-floating">
+            <input type="file" id="background" name="background">
+        </div>
+        <div class="mybtns">
+            <button type="submit" class="btn btn-dark">수정하기</button>
+            <button onclick="close_background_box()" type="button" class="btn btn-outline-dark">닫기</button>
+        </div>
+    </div>
+</form>
+
 <div class="mycards">
     <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
         
         {% for article in articles %}
         <div class="col">
             <div class="card h-100">
-                
-                
+
                 <img src="{{article.image.url}}"
                      class="card-img-top one" onclick="location.href='/tweet/post-detail/{{ article.id }}'">
                 <div class="card-body">
@@ -272,9 +327,7 @@
             </div>
         </div>
         {% endfor %} 
-        
     </div>
-    
 </div>
 </body>
 

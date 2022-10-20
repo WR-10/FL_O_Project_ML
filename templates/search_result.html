@@ -40,6 +40,7 @@
             background-position: center;
             background-size: cover;
         }
+
         .user_button > button {
             width: 200px;
             height: 50px;
@@ -171,7 +172,6 @@
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="/accounts/logout">logout</a>
-                    </li>
                 </ul>
                 <form class="d-flex" action="/user/searchuser/" method="post">
                     {% csrf_token %}
@@ -198,7 +198,7 @@
 
                 <div class="mb-3" style="display: flex; flex-direction: row; margin-right: 100px">
 
-                    <div style="margin-right: 30px;"> 게시물 <span style="font-weight: bold"> {{articles.count}} </span></div>
+                    <div style="margin-right: 30px;"> 게시물 <span style="font-weight: bold"> 1 </span></div>
                     <div style="margin-right: 30px" href="#"> 팔로워 <span
                             style="font-weight: bold"> {{ user.followed.count }}</span></div>
                     <div style="margin-right: 30px" href="#"> 팔로우 <span
@@ -247,7 +247,6 @@
     </div>
 </form>
 
-
 <form action="/tweet/search_result/" method="post">
     {% csrf_token %}
     <div class="mypost" id="search-box">
@@ -256,7 +255,7 @@
             <label>TAG</label>
         </div>
         <div class="mybtns">
-            <button type="submit" class="btn btn-dark" >검색</button>
+            <button type="submit" class="btn btn-dark">검색</button>
             <button onclick="close_search_box()" type="button" class="btn btn-outline-dark">닫기</button>
         </div>
     </div>
@@ -280,32 +279,24 @@
     </div>
 </form>
 <br>
-<div class="row justify-content-md-center">
-    <div class="col-md-4">
-        <!-- 사용자 리스트 반복문 -->
-        {% for searchuser in searchusers %}
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">{{ searchuser.username }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">{{ searchuser.email }}</h6>
-                <p class="card-text">
-                    {{ searchuser.profile }}
-                </p>
-                <p class="card-text">
-                    팔로잉 {{ searchuser.follow.count }}명 / 팔로워 {{ searchuser.followed.count }} 명
-                </p>
-                {% if searchuser in user.follow.all %}
-                <a href="/user/follow/{{ searchuser.id }}" class="card-link">[팔로우 취소]</a>
-                {% else %}
-                <a href="/user/follow/{{ searchuser.id }}" class="card-link">[팔로우]</a>
-                {% endif %}
-               
+<div class="mycards">
+    <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
+
+        {% for article in articles %}
+            <div class="col">
+                <div class="card h-100">
+                    <img src="{{ article.image.url }}"
+                         class="card-img-top one" onclick="location.href='/tweet/post-detail/{{ article.id }}'">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ article.title }}</h5>
+                        <p class="card-text">{{ article.content }}</p>
+
+                        <p class="mycomment"> Tag: {% for tag in article.taghash.all %}
+                            {{ tag.tagname }} {% endfor %}</p>
+                    </div>
+                </div>
             </div>
-        </div>
-        <hr>
         {% endfor %}
-        
-       
     </div>
 </div>
 </body>
