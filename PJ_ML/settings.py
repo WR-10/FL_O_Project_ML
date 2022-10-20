@@ -66,7 +66,9 @@ ROOT_URLCONF = 'PJ_ML.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+
         'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates', 'accounts')],
+
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -172,7 +174,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
 EMAIL_HOST_USER = 'qualia4213@gmail.com' # 내 이메일주소
-EMAIL_HOST_PASSWORD = 'viplmcsfjpefcqqz' #발급한 앱비밀번호
+EMAIL_HOST_PASSWORD = '' #발급한 앱비밀번호
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
