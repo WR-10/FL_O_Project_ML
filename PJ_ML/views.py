@@ -12,11 +12,11 @@ def main(request):
     if user:
         if request.method == "GET":
             a = request.user.id
-            articles = Article.objects.filter(user_id = a)
-            
+            articles = Article.objects.filter(user_id = a).order_by('-updated_at')
             context = {
                     'articles' : articles
                 }
+            print(context)
             
             return render(request,'main.html', context)
     else: 
