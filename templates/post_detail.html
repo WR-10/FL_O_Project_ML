@@ -35,7 +35,7 @@
         }
         .bgimg {
             width: 100%;
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://movie-phinf.pstatic.net/20210715_95/1626338192428gTnJl_JPEG/movie_image.jpg');
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{user.background.url}}');
             background-position: center;
             background-size: cover;
         }
@@ -144,69 +144,68 @@
 </head>
 
 <body>
-<div class = "bgimg">
-    <nav class="navbar navbar-expand-sm navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="javascript:void(0)">Logo</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="mynavbar">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)">Link</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)">Link</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)">Link</a>
-                    </li>
-                </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="text" placeholder="Search">
-                    <button class="btn btn-primary" type="button">Search</button>
-                </form>
+    <div class="bgimg">
+        <nav class="navbar navbar-expand-sm navbar-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="javascript:void(0)">Logo</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mynavbar">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/accounts/logout">logout</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" action="/user/searchuser/" method="post">
+                        {% csrf_token %}
+                        <input class="form-control me-2" type="text" placeholder="Search" name="searchuser">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </form>
+                </div>
             </div>
-        </div>
-    </nav>
-<div class="mytitle">
-    <h1>FL_O</h1>
-
-    <div style="display: flex; flex-direction: row">
-        <div class="big_profile_box">
-            <img class="profile_img"
-                 src="/media/2022/10/19/869acd88b0c94e639a5888095ef94aec.jpg"> 
-        </div>
-        <div style="display: flex; flex-direction: column; margin: 40px 60px">
-            <div class="mb-3" style="display: flex; flex-direction: row;">
-            
-                <div style="font-size: 24px"> 유저 이름 </div>                        
-                                                       
-            </div>
-           
-            <div class="mb-3" style="display: flex; flex-direction: row; margin-right: 100px">
-                <div style="margin-right: 30px;"> 게시물 <span style="font-weight: bold"> 1 </span></div>
-                <div style="margin-right: 30px" href="#" > 팔로워 <span style="font-weight: bold"> 11 </span></div>
-                <div style="margin-right: 30px" href="#"> 팔로우 <span style="font-weight: bold"> 111 </span></div>
-            </div>
+        </nav>
+        <div class="mytitle">
+            <h1>{{ user.username }}</h1>
+    
             <div style="display: flex; flex-direction: row">
-                <div style="font-size: 18px;font-weight: bold"> 유저네임 </div>
+                <div class="big_profile_box">
+                    <img class="profile_img"
+                         src="{{ user.image.url }}">
+                </div>
+                <div style="display: flex; flex-direction: column; margin: 40px 60px">
+                    <div class="mb-3" style="display: flex; flex-direction: row;">
+                        <div style="font-size: 24px"></div>
+    
+                    </div>
+    
+                    <div class="mb-3" style="display: flex; flex-direction: row; margin-right: 100px">
+    
+                        <div style="margin-right: 30px;"> 게시물 <span style="font-weight: bold"> {{articles.count}} </span></div>
+                        <div style="margin-right: 30px" href="#"> 팔로워 <span
+                                style="font-weight: bold"> {{ user.followed.count }}</span></div>
+                        <div style="margin-right: 30px" href="#"> 팔로우 <span
+                                style="font-weight: bold"> {{ user.follow.count }} </span></div>
+    
+                    </div>
+    
+                    <div style="display: flex; flex-direction: row">
+                        <div style="font-size: 18px;font-weight: bold"> {{ user.profile }} </div>
+    
+    
+                    </div>
+    
+                </div>
             </div>
-
+    
+    
+            <div class="user_button">
+                <button onclick="open_box()">게시글 등록하기</button>
+                <button onclick="open_search_box()">게시글 검색하기</button>
+                <button onclick="open_profile_box()">프로필 수정하기</button>
+            </div>
         </div>
     </div>
-
-
-
-
-
-    <div class = "user_button">
-    <button onclick="open_box()">게시글 등록하기</button>
-    <button onclick="open_search_box()">게시글 검색하기</button>
-    </div>
-</div>
-</div>
 <form>
 
 <div class="mypost" id="post-box">
@@ -227,10 +226,11 @@
     </div>
 </div>
 </form>
-<form>
+<form action="/tweet/search_result/" method="post">
+    {% csrf_token %}
     <div class="mypost" id="search-box">
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" placeholder="제목을 입력하세요">
+            <input type="text" class="form-control" placeholder="제목을 입력하세요" name="search_button">
             <label>TAG</label>
         </div>
         <div class="mybtns">
@@ -244,47 +244,50 @@
     <div class="row justify-content-md-center">
         <div class="col-md-4">
             <div class="card h-100">
-                <img src="{{id_com.image.url}}"
+                <img src="{{article.image.url}}"
                 class="card-img-top">
                 <div class="card-body">
-                    <h5 class="card-title">{{ id_com.title }}</h5>
-                    <p class="card-text">{{ id_com.content }}</p>
-                    <p>⭐ 25</p>
-                    <p class="mycomment">#TAG #TAG #TAG</p>
+                    <h5 class="card-title">{{ article.title }}</h5>
+                    <p class="card-text">{{ article.content }}</p>
+                    <p class="mycomment">Tag: {% for tag in article.taghash.all %} {{ tag.tagname }} {% endfor %}</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<br>
 <!-- 글 작성 하는 곳 -->
-<form class="input-group mb-3" action="/post-detail/comment/{{ article.id }}" method="post">
+<div class="row justify-content-md-center">
+<div class="col-md-4">
+<form class="detail-box" action="/tweet/post-detail/comment/{{article.id}}" method="post">
     {% csrf_token %}
     <input type="text" class="form-control" id='comment' name='comment' placeholder="댓글을 작성 해 주세요"/>
     <button class="btn btn-outline-secondary" type="submit">작성</button>
 </form>
 <hr>
 <!-- 반복문이 들어 갈 곳 -->
-                {% for cm in comment %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="media">
-                <div class="media-body">
-                    <h5 class="mt-0"> {{ cm.comment }} </h5>
-                    <span> {{ cm.author }} </span>
-                    <span> - {{ cm.created_at | timesince }} 전</span>
-                </div>
-                {% if cm.author == user %}
-                    <div style="float: right">
-                        <a href="post-detail/comment/delete/{{ cm.id }}">
-                            <span class="badge bg-danger">삭제</span>
-                        </a>
+                {% for cm in comments %}
+                    <div class="detail-box">
+                        <div class="mycards">
+                            <div class="row justify-content-md-center">
+                                <div class="col-md-4">
+                                    <h5 class="card-title"> {{ cm.comment }} </h5>
+                                    <span> {{ cm.author.username }} </span>
+                                    <span> - {{ cm.created_at | timesince }} 전</span>
+                                    <div style="float: right">
+                                        <a href="post-detail/comment/delete/{{ cm.id }}">
+                                            <span class="badge bg-danger">삭제</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                {% if cm.author == user %}
+                                    
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    <hr>
-{% endfor %}
+                    <hr>
+                {% endfor %}
 <!-- 반복문이 끝난 곳 -->
 </div>
 </div>

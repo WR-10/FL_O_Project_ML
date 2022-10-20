@@ -33,13 +33,13 @@
             align-items: center;
             justify-content: center;
         }
-
         .bgimg {
             width: 100%;
             background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{user.background.url}}');
             background-position: center;
             background-size: cover;
         }
+
         .user_button > button {
             width: 200px;
             height: 50px;
@@ -85,14 +85,13 @@
 
             margin-top: 20px;
         }
-
         .mybtns > button {
             margin-right: 10px;
         }
 
 
         .big_profile_box {
-            width: 150px;
+            width: 150px; 
             height: 150px;
             border-radius: 70%;
             overflow: hidden;
@@ -118,49 +117,53 @@
         .mypost-comment > button {
             margin-top: 15px;
         }
-
         .one {
-            height: 200px;
+            height : 200px;
             object-fit: cover;
 
         }
 
     </style>
     <script>
-        function open_box() {
+        function open_box(){
             $('#post-box').show()
             $('#search-box').hide()
             $('#profile-box').hide()
         }
-
-        function close_box() {
+        function close_box(){
             $('#post-box').hide()
         }
-
-        function open_search_box() {
+        function open_search_box(){
             $('#search-box').show()
             $('#post-box').hide()
             $('#profile-box').hide()
         }
-
-        function close_search_box() {
+        function close_search_box(){
             $('#search-box').hide()
         }
-
-        function open_profile_box() {
+        function open_profile_box(){
             $('#profile-box').show()
             $('#post-box').hide()
             $('#search-box').hide()
         }
-
-        function close_profile_box() {
+        function close_profile_box(){
             $('#profile-box').hide()
+        }
+
+        function open_background_box(){
+            $('#background_box').show()
+            $('#post-box').hide()
+            $('#search-box').hide()
+            $('#profile-box').hide()
+        }
+        function close_background_box(){
+            $('#background_box').hide()
         }
     </script>
 </head>
 
 <body>
-<div class="bgimg">
+<div class = "bgimg">
     <nav class="navbar navbar-expand-sm navbar-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="javascript:void(0)">Logo</a>
@@ -170,8 +173,8 @@
             <div class="collapse navbar-collapse" id="mynavbar">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/accounts/logout">logout</a>
-                    </li>
+
+                        <a class="nav-link" href="/accounts/logout/">logout</a>
                 </ul>
                 <form class="d-flex" action="/user/searchuser/" method="post">
                     {% csrf_token %}
@@ -181,71 +184,50 @@
             </div>
         </div>
     </nav>
-    <div class="mytitle">
-        <h1>{{ user.username }}</h1>
+<div class="mytitle">
+    <h1>{{target_user.username}}</h1>
 
-        <div style="display: flex; flex-direction: row">
-            <div class="big_profile_box">
-                <img class="profile_img"
-                     src="{{ user.image.url }}">
-            </div>
-            <div style="display: flex; flex-direction: column; margin: 40px 60px">
-                <div class="mb-3" style="display: flex; flex-direction: row;">
-
-                    <div style="font-size: 24px"></div>
-
-                </div>
-
-                <div class="mb-3" style="display: flex; flex-direction: row; margin-right: 100px">
-
-                    <div style="margin-right: 30px;"> 게시물 <span style="font-weight: bold"> {{articles.count}} </span></div>
-                    <div style="margin-right: 30px" href="#"> 팔로워 <span
-                            style="font-weight: bold"> {{ user.followed.count }}</span></div>
-                    <div style="margin-right: 30px" href="#"> 팔로우 <span
-                            style="font-weight: bold"> {{ user.follow.count }} </span></div>
-
-                </div>
-
-                <div style="display: flex; flex-direction: row">
-                    <div style="font-size: 18px;font-weight: bold"> {{ user.profile }} </div>
-
-
-                </div>
-
-            </div>
+    <div style="display: flex; flex-direction: row">
+        <div class="big_profile_box">
+            <img class="profile_img"
+                 src="{{target_user.image.url}}"> 
         </div>
+        <div style="display: flex; flex-direction: column; margin: 40px 60px">
+            <div class="mb-3" style="display: flex; flex-direction: row;">
+            
+                <div style="font-size: 24px"> </div>                        
+                                                       
+            </div>
+           
+            <div class="mb-3" style="display: flex; flex-direction: row; margin-right: 100px">
+                
+                <div style="margin-right: 30px;"> 게시물 <span style="font-weight: bold"> {{articles.count}} </span></div>
+                <div style="margin-right: 30px" href="#" > 팔로워 <span style="font-weight: bold"> {{ target_user.followed.count }}</span></div>
+                <div style="margin-right: 30px" href="#"> 팔로우 <span style="font-weight: bold"> {{ target_user.follow.count }} </span></div>
+                
+            </div>
+           
+            <div style="display: flex; flex-direction: row">
+                <div style="font-size: 18px;font-weight: bold"> {{target_user.profile}} </div>
+                
 
+            </div>
 
-        <div class="user_button">
-            <button onclick="open_box()">게시글 등록하기</button>
-            <button onclick="open_search_box()">게시글 검색하기</button>
-            <button onclick="open_profile_box()">프로필 수정하기</button>
         </div>
     </div>
+
+
+
+
+
+    <div class = "user_button">
+        <button onclick="open_search_box()">게시글 검색하기</button>
+    </div>
+</div>
 </div>
 
 
-<form method="POST" action="/tweet/write/" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="mypost" id="post-box">
 
-        <div class="form-floating mb-3">
-            <input type="text" name="title" id="title" class="form-control" placeholder="제목을 입력하세요">
-            <label>TITLE</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" name="content" id="content" placeholder="내용을 입력하세요">
-            <label>CONTENT</label>
-        </div>
-        <div class="form-floating">
-            <input type="file" id="image" name="image">
-        </div>
-        <div class="mybtns">
-            <button type="submit" class="btn btn-dark">기록하기</button>
-            <button onclick="close_box()" type="button" class="btn btn-outline-dark">닫기</button>
-        </div>
-    </div>
-</form>
 
 
 <form action="/tweet/search_result/" method="post">
@@ -261,51 +243,24 @@
         </div>
     </div>
 </form>
+<div class="mycards">
+    <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
+        
+        {% for article in articles %}
+        <div class="col">
+            <div class="card h-100">
 
-<form method="POST" action="/user/profile/modify/" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="mypost" id="profile-box">
-
-        <div class="form-floating mb-3">
-            <input type="text" name="profile" id="title" class="form-control" placeholder="제목을 입력하세요">
-            <label>소개글</label>
-        </div>
-        <div class="form-floating">
-            <input type="file" id="image" name="image">
-        </div>
-        <div class="mybtns">
-            <button type="submit" class="btn btn-dark">수정하기</button>
-            <button onclick="close_profile_box()" type="button" class="btn btn-outline-dark">닫기</button>
-        </div>
-    </div>
-</form>
-<br>
-<div class="row justify-content-md-center">
-    <div class="col-md-4">
-        <!-- 사용자 리스트 반복문 -->
-        {% for searchuser in searchusers %}
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">{{ searchuser.username }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">{{ searchuser.email }}</h6>
-                <p class="card-text">
-                    {{ searchuser.profile }}
-                </p>
-                <p class="card-text">
-                    팔로잉 {{ searchuser.follow.count }}명 / 팔로워 {{ searchuser.followed.count }} 명
-                </p>
-                {% if searchuser in user.follow.all %}
-                <a href="/user/follow/{{ searchuser.id }}" class="card-link">[팔로우 취소]</a>
-                {% else %}
-                <a href="/user/follow/{{ searchuser.id }}" class="card-link">[팔로우]</a>
-                {% endif %}
-               
+                <img src="{{article.image.url}}"
+                     class="card-img-top one" onclick="location.href='/tweet/post-detail/{{ article.id }}'">
+                <div class="card-body">
+                    <h5 class="card-title">{{ article.title }}</h5>
+                    <p class="card-text">{{ article.content }}</p>
+                    
+                    <p class="mycomment"> Tag: {% for tag in article.taghash.all %} {{ tag.tagname }} {% endfor %}</p>
+                </div>
             </div>
         </div>
-        <hr>
-        {% endfor %}
-        
-       
+        {% endfor %} 
     </div>
 </div>
 </body>

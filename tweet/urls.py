@@ -9,7 +9,6 @@ urlpatterns = [
     path('add/<int:id>', views.add, name = 'add'),
     path('post-detail/comment/<int:id>', views.write_comment, name='write_comment'),
     path('post-detail/comment/delete/<int:id>', views.delete_comment, name='delete_comment'),
-    path('detail/<int:id>/', views.post_detail),
     path('like/<int:id>', views.post_like, name='post_like'),
     path('community/<int:id>', views.add, name = 'add'),
     path('community/<int:id>/mod', views.mod),

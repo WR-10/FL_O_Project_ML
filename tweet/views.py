@@ -43,7 +43,7 @@ def search_result(request):
     if request.method == "POST":
         searchname = request.POST.get('search_button')
         tags = Tag.objects.filter(tagname=searchname) # 검색어가 필요함
-        articles = Article.objects.filter(taghash__in = tags).order_by('-updated_at')
+        articles = Article.objects.filter(taghash__in = tags, user_id=request.user.id).order_by('-updated_at')
         
         return render(request, 'search_result.html', {'searchname':searchname, 'articles':articles})
     elif request.method == 'GET':
@@ -86,10 +86,10 @@ def write_comment(request, id): # 댓글 작성
         TC = TweetComment()
         TC.comment = comment
         TC.author = request.user
-        TC.tweet = current_tweet
+        TC.article = current_tweet
         TC.save()
         
-        return redirect('/post-detail/comment/'+str(id))
+        return redirect('/tweet/post-detail/'+str(id))
 
 
 @login_required
@@ -99,13 +99,13 @@ def delete_comment(request, id):
     comment.delete()
     return redirect('/post-detail/comment/'+str(current_tweet))
 
-
 def post_detail(request, id):
     if request.method == 'GET':
         my_article = Article.objects.get(id=id) #아티클 id 담아
-        tweet_comment = TweetComment.objects.filter(tweet_id=id).order_by('created_at') #트윗코맨트 트윗 id 
-        return render(request,'post_detail.html',{'article':my_article,'comment':tweet_comment})
-            
+        tweet_comment = TweetComment.objects.filter(article_id=id).order_by('-created_at') #
+        return render(request,'post_detail.html',{'article':my_article,'comments':tweet_comment})
+
+    
 @login_required
 def post_like(request, id):
     me = request.user
@@ -117,10 +117,10 @@ def post_like(request, id):
     return redirect('/')
 
 
-def post_detail(request, id):
+# def post_detail(request, id):
 
-    id_com = Article.objects.get(id = id) # get의 의미 db에 A필드에 B인걸 가지고 오겠따(where같은개념)  
-    com = {
-        'id_com' : id_com,
-    }
-    return render(request,'post_detail.html',com)
+#     id_com = Article.objects.get(id = id) # get의 의미 db에 A필드에 B인걸 가지고 오겠따(where같은개념)  
+#     com = {
+#         'id_com' : id_com,
+#     }
+#     return render(request,'post_detail.html',com)
