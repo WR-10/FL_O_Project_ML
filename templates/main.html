@@ -153,7 +153,9 @@
             <div class="collapse navbar-collapse" id="mynavbar">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" type = "href="logout.html">logout</a>
+
+                        <a class="nav-link" href="/accounts/logout/">logout</a>
+
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0)">Link</a>
@@ -162,9 +164,10 @@
                         <a class="nav-link" href="javascript:void(0)">Link</a>
                     </li>
                 </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="text" placeholder="Search">
-                    <button class="btn btn-primary" type="button">Search</button>
+                <form class="d-flex" action="user/searchuser/" method="post">
+                    {% csrf_token %}
+                    <input class="form-control me-2" type="text" placeholder="Search" name="searchuser">
+                    <button class="btn btn-primary" type="submit">Search</button>
                 </form>
             </div>
         </div>
@@ -186,7 +189,7 @@
            
             <div class="mb-3" style="display: flex; flex-direction: row; margin-right: 100px">
                 
-                <div style="margin-right: 30px;"> 게시물 <span style="font-weight: bold"> 1 </span></div>
+                <div style="margin-right: 30px;"> 게시물 <span style="font-weight: bold"> {{articles.count}} </span></div>
                 <div style="margin-right: 30px" href="#" > 팔로워 <span style="font-weight: bold"> {{ user.followed.count }}</span></div>
                 <div style="margin-right: 30px" href="#"> 팔로우 <span style="font-weight: bold"> {{ user.follow.count }} </span></div>
                 
@@ -264,7 +267,7 @@
                     <h5 class="card-title">{{ article.title }}</h5>
                     <p class="card-text">{{ article.content }}</p>
                     
-                    <p class="mycomment">#TAG #TAG #TAG</p>
+                    <p class="mycomment"> Tag: {% for tag in article.taghash.all %} {{ tag.tagname }} {% endfor %}</p>
                 </div>
             </div>
         </div>
