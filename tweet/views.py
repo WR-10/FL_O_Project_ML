@@ -23,9 +23,11 @@ def write(request):
 
             #* 이 포스팅의 이미지로 Yolov5 돌려서 결과(tag) 출력
 
-            tag = machine_learning.ml_yolov5(str(article.image)) # 이미지 이름
+            print(f"article : {article.id}")
 
-            print(f"def write : {tag} == '분석완료'" )
+            #tag = machine_learning.ml_yolov5(str(article.image)) # 이미지 이름
+
+            # print(f"def write : {tag} == '분석완료'" )
             # return 값이 어떤식으로
 
             # tag = ['person','phone','tie'] <<- list
@@ -114,3 +116,6 @@ def post_like(request, id):
     else:
         click_post.likes.add(request.user)
     return redirect('/')
+
+def post_detail(request, id):
+    return render(request,'post_detail.html')
