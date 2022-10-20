@@ -7,22 +7,18 @@ from django.http import HttpResponse
 
 
 def write(request):
-    # user = authenticate(request, username = username, password = password)
-    # if user:
-        
-        if request.method == "GET":
-            return render(request, 'write.html')
-        elif request.method == "POST":
+    our = request.user.is_authenticated
+    if our:
+        if request.method == "POST":
             article = Article()
             article.title = request.POST.get('title')
             article.content = request.POST.get('content')
             article.image = request.FILES['image']
+            article.user = request.user
+            
+            print(request.user.id) # 웹에서 request안에 로그인의 사용자가 들어있는데 그걸 가져올때는 request.user 안에 usermodel안에 정보가 들어있다. 
             article.save()
             
-
-            
-            #* 이 포스팅의 이미지로 Yolov5 돌려서 결과(tag) 출력
-
             tags = machine_learning.ml_yolov5(str(article.image))
             exist_tags = Tag.objects.all() # tag list 형태로 담긴다. ex) person, teddy bear
             tag_list = []
@@ -36,12 +32,13 @@ def write(request):
                 ### 여기까지가 태그 저장 기능 함수
                 tagman =Tag.objects.get(tagname=tag) # tagname get
                 article.taghash.add(tagman) # 가져온거 추가 
-            return redirect('/tweet/community/')
-                
+          
+            return redirect('/')
+    else: 
+        return redirect('/accounts/login/')        
       
+            #* 이 포스팅의 이미지로 Yolov5 돌려서 결과(tag) 출력
 
-            
-            
 def search_result(request):
     if request.method == "POST":
         searchname = request.POST.get('search_button')
@@ -54,15 +51,6 @@ def search_result(request):
         return render(request, 'search_result.html')
         
 
-def community(request):
-    if request.method == 'GET':
-        articles = Article.objects.all().order_by('-updated_at')
-        context = {
-            'articles' : articles
-        }
-
-        
-        return render(request, 'community.html', context)
 
 
 def add(request, id):
@@ -129,4 +117,9 @@ def post_like(request, id):
 
 
 def post_detail(request, id):
-    return render(request,'post_detail.html')
+
+    id_com = Article.objects.get(id = id) # get의 의미 db에 A필드에 B인걸 가지고 오겠따(where같은개념)  
+    com = {
+        'id_com' : id_com,
+    }
+    return render(request,'post_detail.html',com)
