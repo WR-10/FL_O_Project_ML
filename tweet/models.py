@@ -25,6 +25,9 @@ class Article(models.Model):
     updated_at = models.DateTimeField(auto_now = True)
     user = models.ForeignKey(Users, on_delete = models.CASCADE, null = True) 
     
+    ### 태그 추가 
+    taghash = models.ManyToManyField('Tag', related_name = "tagged")
+    
 class TweetComment(models.Model):
     article = models.ForeignKey(Article, null=True, blank=True, on_delete=models.CASCADE)# 포스트 게시글 참조
     author = models.ForeignKey(Users, on_delete=models.CASCADE) # 작성자
@@ -37,3 +40,8 @@ class TweetComment(models.Model):
     # 게시글 작성시 DB에 title로 표시
     def __str__(self):
         return self.comment
+
+
+# Tag 모델
+class Tag(models.Model):
+    tagname = models.CharField(max_length=20)
