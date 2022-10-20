@@ -4,5 +4,5 @@ from user import views
 app_name = "user"
 
 urlpatterns = [
-    path('searchname/<str:profile>/', views.searchname, name="searchname"),
+    path('searchuser/', views.searchuser, name="searchuser"),
 ]
