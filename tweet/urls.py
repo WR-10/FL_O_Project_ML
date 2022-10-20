@@ -14,6 +14,8 @@ urlpatterns = [
     path('community/<int:id>', views.add, name = 'add'),
     path('community/<int:id>/mod', views.mod),
     path('search_result/', views.search_result, name="search_result"),
+    path('post-detail/<int:id>', views.post_detail),
+
 
 ]
 

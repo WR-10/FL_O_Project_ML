@@ -13,6 +13,7 @@ def ml_yolov5(image): # 파라미터
     result = results.pandas().xyxy[0].to_numpy()
     res = []
     for i in result:
+
         print(i)
         if i[4] > 0.1:
             res.append(i[6]) # 1: res = ['suitcase'] 2: res = ['suitcase','suitcase'] 3: res = ['suitcase','suitcase','suitcase']

@@ -17,9 +17,9 @@ def write(request):
             article.title = request.POST.get('title')
             article.content = request.POST.get('content')
             article.image = request.FILES['image']
-            
             article.save()
             
+
             
             #* 이 포스팅의 이미지로 Yolov5 돌려서 결과(tag) 출력
 
@@ -38,21 +38,8 @@ def write(request):
                 article.taghash.add(tagman) # 가져온거 추가 
             return redirect('/tweet/community/')
                 
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                # for tn in Tag.objects.all(i): # Tag의 모든 것을 가져오고 그 중에 tn이 있다면
-                #     tag = Tag.objects.get(tagname=tn) # tag를 가져오고 그렇지 않으면... 추가를 해줘야 하는데...
-                # else: # 없으면??
-                #     tag.objects.create(tagename=i) # 추가를 해주는 코드인데... 여기를 어떻게 써야되지
-                #     # article.taghash.add(tag) # tag를 추가해라>???? 이게 맞나? object.create??
+      
+
             
             
 def search_result(request):
@@ -141,3 +128,5 @@ def post_like(request, id):
     return redirect('/')
 
 
+def post_detail(request, id):
+    return render(request,'post_detail.html')

@@ -52,6 +52,6 @@ def searchname(request, profile):
     if request.method == "GET":
         print("searchnameget들옴")
         search_name = Users.objects.filter(profile=profile)
-    return render(request, 'search.html', {'search_name':search_name})
 
+    return render(request, 'search.html', {'search_name':search_name})
 
