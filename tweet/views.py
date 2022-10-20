@@ -6,24 +6,28 @@ from django.contrib.auth.decorators import login_required
 
 
 def write(request):
-    # user = authenticate(request, username = username, password = password)
-    # if user:
-        
-        if request.method == "GET":
-            return render(request, 'write.html')
-        elif request.method == "POST":
+    our = request.user.is_authenticated
+    if our:
+        if request.method == "POST":
             article = Article()
             article.title = request.POST.get('title')
             article.content = request.POST.get('content')
             article.image = request.FILES['image']
+            article.user = request.user
+            
+            print(request.user.id) # 웹에서 request안에 로그인의 사용자가 들어있는데 그걸 가져올때는 request.user 안에 usermodel안에 정보가 들어있다. 
             article.save()
             
-            print(type(article.image))
-            print(str(article.image))
+          
+            return redirect('/')
+        else:
+            pass
+    else: 
+        return redirect('/accounts/login/')        
+           
 
             #* 이 포스팅의 이미지로 Yolov5 돌려서 결과(tag) 출력
 
-            print(f"article : {article.id}")
 
             #tag = machine_learning.ml_yolov5(str(article.image)) # 이미지 이름
 
@@ -35,24 +39,22 @@ def write(request):
             # def a(aa):
             #   return b
 
-            return redirect('/tweet/community/')
+           
             # tag model(db) 저장
 
             # article.tag 저장
             
 
             # Article.objects.create(title = title, content = content, image = article.image)
-
-
-def community(request):
-    if request.method == 'GET':
-        articles = Article.objects.all().order_by('-create_at')
-        context = {
-            'articles' : articles
-        }
+# def community(request):
+#     if request.method == 'GET':
+#         articles = Article.objects.all().order_by('-updated_at')
+#         context = {
+#             'articles' : articles
+#         }
 
         
-        return render(request, 'community.html', context)
+#         return render(request, 'community.html', context)
 
 
 def add(request, id):
@@ -118,4 +120,8 @@ def post_like(request, id):
     return redirect('/')
 
 def post_detail(request, id):
-    return render(request,'post_detail.html')
+    id_com = Article.objects.get(id = id) # get의 의미 db에 A필드에 B인걸 가지고 오겠따(where같은개념)  
+    com = {
+        'id_com' : id_com,
+    }
+    return render(request,'post_detail.html',com)
