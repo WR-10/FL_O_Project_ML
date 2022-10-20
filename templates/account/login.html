@@ -170,15 +170,15 @@ input {
 
           {% get_providers as socialaccount_providers %}
           {% if socialaccount_providers %}
+
           <div class="my-2">
-					<a href="/accounts/google/login/?process=login&{{ redirect_field_name }}={{ redirect_field_value }}" class="social"><i class="fa fa-google fa-2x"></i></a>
-					<a href="#" class="social"><i class="fab fa fa-github fa-2x"></i></a>
+            <a href="{% provider_login_url 'google' %}" class="btn btn-google btn-user btn-block"><i class="fa fa-google fa-2x"></i></a>
+					<a href="{% provider_login_url 'github' %}" class="social"><i class="fab fa fa-github fa-2x"></i></a>
         </div>
           {% include "socialaccount/snippets/login_extra.html" %}
           {% endif %}
-
-
 				</div>
+     
 				<span>or use your account</span>
         {% csrf_token %}
 				<input type="email" placeholder="Email" {{ form.login }} 
@@ -194,7 +194,8 @@ input {
 					<h1>OverFL_O</h1>
           <p>아직 계정이 없으신가요?<br>
             지금 당장 가입하세요!</p>
-            <button href="{{ signup_url }}">sign up</button>
+            <button type="button" onclick=location.href='{{ signup_url }}'>sign up</button>
+            
 				</div>
 			</div>
 		</div>
