@@ -5,14 +5,12 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
 
-
     
 def searchuser(request):
     if request.method == "POST":
         search = request.POST.get('searchuser')
-        searchusers = Users.objects.filter(username=search)
+        searchusers = Users.objects.filter(first_name=search)
         return render(request, 'searchuser.html', {'searchusers':searchusers})
-
 
 def user_follow(request, id):
     me = request.user
@@ -25,9 +23,15 @@ def user_follow(request, id):
 
 def profile_modify(request):
     if request.method == "POST":
-        print("profile_modify")
         user = request.user
-        user.profile = request.POST.get('profile')
+        if request.POST.get('profile') =='':
+            pass
+        else:
+            user.profile = request.POST.get('profile')
+        if request.POST.get('first-name') == '':
+            pass
+        else:
+            user.first_name = request.POST.get('first-name')
         try:
             user.image = request.FILES['image']
         except:
@@ -36,10 +40,8 @@ def profile_modify(request):
 
         return redirect('/')
 
-        
 def background_modify(request):
     if request.method == "POST":
-        print("background_modify")
         user = request.user
         user.background = request.FILES['background']
         try:

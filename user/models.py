@@ -30,8 +30,6 @@ class Users(AbstractUser):
             uuid_name + extension,
         ])
 
-
-        
     image = models.ImageField(upload_to = date_upload_to, null = True, default = 'profile/default_profile.png')
     background = models.ImageField(upload_to = date_upload_to_bg, null = True, default = 'background/big-sur-4k-wp.jpg')
     profile = models.TextField(max_length=500, blank=True)
