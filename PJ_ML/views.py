@@ -16,7 +16,6 @@ def main(request):
             context = {
                     'articles' : articles
                 }
-            print(context)
             
             return render(request,'main.html', context)
     else: 
@@ -26,8 +25,7 @@ def main(request):
 @login_required
 def user_view(request):
     if request.method == 'GET':
-       user_list = Users.objects.all().exclude(username = request.user.username)  
-       print(user_list)  
+       user_list = Users.objects.all().exclude(username = request.user.username)   
        return render(request, 'searchuser.html', {'user_list' : user_list})
 
 @login_required
@@ -38,6 +36,6 @@ def user_follow(request, id):
         click_user.followed.remove(request.user)
     else:
         click_user.followed.add(request.user)
-    return redirect('/user/profile/'+str(id))     #127.0.0.1/8000/user/profile/2
+    return redirect('/user/profile/'+str(id))
 
 

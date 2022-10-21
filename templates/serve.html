@@ -166,7 +166,7 @@
 <div class = "bgimg">
     <nav class="navbar navbar-expand-sm navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="javascript:void(0)">Logo</a>
+            <a class="navbar-brand" href="/">Logo</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -230,7 +230,7 @@
 
 
 
-<form action="/tweet/search_result/" method="post">
+<form action="/tweet/search_result/{{ target_user.id }}" method="post">
     {% csrf_token %}
     <div class="mypost" id="search-box">
         <div class="form-floating mb-3">
