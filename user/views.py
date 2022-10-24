@@ -4,22 +4,28 @@ from tweet.models import Article
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
-
-    
 def searchuser(request):
     if request.method == "POST":
         search = request.POST.get('searchuser')
         searchusers = Users.objects.filter(first_name=search)
         return render(request, 'searchuser.html', {'searchusers':searchusers})
 
-def user_follow(request, id):
+@login_required
+def user_view(request): # 유저 리스트 검색
+    if request.method == 'GET':
+       user_list = Users.objects.all().exclude(username = request.user.username)   
+       return render(request, 'searchuser.html', {'user_list' : user_list})
+
+@login_required
+def user_follow(request, id): #유저 팔로우 기능
     me = request.user
     click_user = Users.objects.get(id = id)
     if me in click_user.followed.all():
         click_user.followed.remove(request.user)
     else:
         click_user.followed.add(request.user)
-    return render(request, )  
+    return redirect('/user/profile/'+str(id))
+
 
 def profile_modify(request):
     if request.method == "POST":
