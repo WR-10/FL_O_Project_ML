@@ -1,7 +1,5 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from tweet.models import Article
-from django.contrib.auth import authenticate
 from user.models import Users
 from django.contrib.auth.decorators import login_required
 
@@ -14,9 +12,9 @@ def main(request):
             a = request.user.id
             articles = Article.objects.filter(user_id = a).order_by('-updated_at')
             context = {
-                    'articles' : articles
-                }
-            
+                'articles' : articles
+            }
+            print(request.user.background.url)
             return render(request,'main.html', context)
     else: 
         return redirect('/accounts/login/')

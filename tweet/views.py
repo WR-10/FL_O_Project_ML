@@ -3,7 +3,6 @@ from .models import Article, Tag
 from machine_learning import machine_learning
 from .models import Article, TweetComment, Tag
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from user.models import Users
 
 
@@ -24,7 +23,7 @@ def write(request):
             tag_list = []
             for exist_tag in exist_tags:
                 tag_list.append(exist_tag.tagname)
-            for tag in tags: # tags for문 돌리기
+            for tag in tags:
                 if tag in tag_list:
                     pass
                 else:
@@ -35,15 +34,12 @@ def write(request):
             return redirect('/')
     else: 
         return redirect('/accounts/login/')        
-      
-            #* 이 포스팅의 이미지로 Yolov5 돌려서 결과(tag) 출력
 
 def search_result(request):
     if request.method == "POST":
         searchname = request.POST.get('search_button')
-        tags = Tag.objects.filter(tagname=searchname) # 검색어가 필요함
+        tags = Tag.objects.filter(tagname=searchname)
         articles = Article.objects.filter(taghash__in = tags, user_id=request.user.id).order_by('-updated_at')
-        
         return render(request, 'search_result.html', {'searchname':searchname, 'articles':articles})
     elif request.method == 'GET':
         return render(request, 'search_result.html')
@@ -51,17 +47,13 @@ def search_result(request):
 def search_target_result(request,id):
     if request.method == "POST":
         searchname = request.POST.get('search_button')
-        tags = Tag.objects.filter(tagname=searchname) # 검색어가 필요함
+        tags = Tag.objects.filter(tagname=searchname)
         articles = Article.objects.filter(taghash__in = tags, user_id=id).order_by('-updated_at')
         target_user = Users.objects.get(id = id)
-        
         return render(request, 'serve.html', {'searchname':searchname, 'articles':articles,'target_user': target_user})
     elif request.method == 'GET':
         return render(request, 'search_result.html')
         
-
-
-
 def add(request, id):
     id_com = Article.objects.get(id = id) 
     com = {
@@ -96,7 +88,6 @@ def write_comment(request, id): # 댓글 작성
         TC.author = request.user
         TC.article = current_tweet
         TC.save()
-        
         return redirect('/tweet/post-detail/'+str(id))
 
 
@@ -110,7 +101,7 @@ def delete_comment(request, id):
 def post_detail(request, id):
     if request.method == 'GET':
         my_article = Article.objects.get(id=id)
-        tweet_comment = TweetComment.objects.filter(article_id=id).order_by('-created_at') #
+        tweet_comment = TweetComment.objects.filter(article_id=id).order_by('-created_at')
         return render(request,'post_detail.html',{'article':my_article,'comments':tweet_comment})
 
     
