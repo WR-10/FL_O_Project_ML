@@ -69,7 +69,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
 
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates', 'accounts', 'static')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates', 'accounts')],
 
         'APP_DIRS': True,
         'OPTIONS': {
@@ -174,7 +174,7 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-ACCOUNT_AUTHENTICATION_METHOD = 'email' # 유저네임은 말고 email로만 인증 할것임
+ACCOUNT_AUTHENTICATION_METHOD = 'email' # 유저네임은 말고 email로만 인증
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory' #none, optional(default, 보내긴하는데 인증하지않아도), mandatory(이메일인증받지않으면 로그인할수없다)
@@ -184,9 +184,13 @@ ACCOUNT_CONFIRM_EMIAL_ON_GET = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
-EMAIL_HOST_USER = 'qualia4213@gmail.com' # 내 이메일주소
-EMAIL_HOST_PASSWORD = '' #발급한 앱비밀번호
+EMAIL_HOST_USER = 'qualia4213@gmail.com' # 내 이메일 주소
+EMAIL_HOST_PASSWORD = '' # 발급한 앱 비밀번호
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
-ACCOUNT_EMAIL_SUBJECT_PREFIX = '[이메일 인증]' #이메일 제목앞에 붙일내용
+ACCOUNT_EMAIL_SUBJECT_PREFIX = '[이메일 인증]' #이메일 제목 앞에 붙일 내용
+
+STATICFILES_DIRS = [
+BASE_DIR / 'static',
+]

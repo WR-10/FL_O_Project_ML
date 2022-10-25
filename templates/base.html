@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
 
@@ -35,7 +36,13 @@
         }
         .bgimg {
             width: 100%;
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{user.image.url}}');
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{user.background.url}}');
+            background-position: center;
+            background-size: cover; 
+        }
+        .bgimg2 {
+            width: 100%;
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{% static "big-sur-4k-wp.jpg" %}');
             background-position: center;
             background-size: cover; 
         }
@@ -166,7 +173,11 @@
 </head>
 
 <body>
+{% if user.background == 'background/big-sur-4k-wp.jpg' %}
+<div class = "bgimg2"> 
+{% else %}
 <div class = "bgimg">
+{% endif %}
     <nav class="navbar navbar-expand-sm navbar-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">Logo</a>
@@ -196,8 +207,8 @@
         <div class="big_profile_box">
             {% if user.image == "profile/default_profile.png" %}
             <img class="profile_img"
-                 src="static/default_profile.png"> 
-            {% else %}
+                src="{% static 'default_profile.png' %}"> 
+            {% else %} 
             <img class="profile_img"
                 src="{{user.image.url}}"> 
             {% endif %}

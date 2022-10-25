@@ -3,8 +3,6 @@ from tweet.models import Article
 from user.models import Users
 from django.contrib.auth.decorators import login_required
 
-
-
 def main(request):
     user = request.user.is_authenticated
     if user:
@@ -14,7 +12,6 @@ def main(request):
             context = {
                 'articles' : articles
             }
-            print(request.user.background.url)
             return render(request,'main.html', context)
     else: 
         return redirect('/accounts/login/')
